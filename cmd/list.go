@@ -28,9 +28,9 @@ import (
 var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List items",
-	Long: `List items in your NextCloud Desk app.
+	Long: `List items in your NextCloud Deck app.
 
-These objects can be cards, stacks and boards`,
+These items can be boards, stacks and cards.`,
 	Run: func(cmd *cobra.Command, args []string) {
     fmt.Println("Possible items to list:")
     fmt.Println("\n  Boards\n  Stacks\n  Cards")
