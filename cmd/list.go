@@ -16,12 +16,12 @@ limitations under the License.
 package cmd
 
 import (
-  "encoding/json"
-  "fmt"
-  "log"
-  "io/ioutil"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"log"
 
-  "github.com/spf13/cobra"
+	"github.com/spf13/cobra"
 )
 
 // listCmd represents the list command
@@ -57,25 +57,25 @@ var listBoards = &cobra.Command{
 
 These objects can be cards, stacks and boards`,
 	Run: func(cmd *cobra.Command, args []string) {
-    c := NewHttpClient()
-    resp, err := c.GetRequest(fmt.Sprintf("%s/index.php/apps/deck/api/v1.0/boards", c.Endpoint))
-    if err != nil {
-      log.Fatal(err)
-    }
-    body, err := ioutil.ReadAll(resp.Body)
-    var decoded []Board
-    jsonErr := json.Unmarshal(body, &decoded)
-    if jsonErr != nil {
-      fmt.Println(jsonErr)
-	  }
-    fmt.Println("Your boards are:")
-    for i := 0; i < len(decoded); i++ {
-      fmt.Println(decoded[i].Title)
-    }
+		c := NewHttpClient()
+		resp, err := c.GetRequest(fmt.Sprintf("%s/index.php/apps/deck/api/v1.0/boards", c.Endpoint))
+		if err != nil {
+			log.Fatal(err)
+		}
+		body, err := ioutil.ReadAll(resp.Body)
+		var decoded []Board
+		jsonErr := json.Unmarshal(body, &decoded)
+		if jsonErr != nil {
+			fmt.Println(jsonErr)
+		}
+		fmt.Println("Your boards are:")
+		for i := 0; i < len(decoded); i++ {
+			fmt.Println(decoded[i].Title)
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(listCmd)
-  listCmd.AddCommand(listBoards)
+	listCmd.AddCommand(listBoards)
 }

@@ -22,9 +22,9 @@ func (c *Client) Request(verb, url string, code int) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-  req.Header.Set("Content-Type", "application/json")
-  req.Header.Set("Accept", "application/json")
-  req.Header.Set("OCI-APIRequest", "true")
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	req.Header.Set("OCI-APIRequest", "true")
 	req.SetBasicAuth(c.Username, c.Password)
 	resp, err := client.Do(req)
 	if err != nil {
