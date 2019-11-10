@@ -32,7 +32,8 @@ var listCmd = &cobra.Command{
 
 These objects can be cards, stacks and boards`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("list called")
+    fmt.Println("Possible items to list:")
+    fmt.Println("\n  Boards\n  Stacks\n  Cards")
 	},
 }
 
