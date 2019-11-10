@@ -21,7 +21,7 @@ import (
   "log"
   "io/ioutil"
 
-	"github.com/spf13/cobra"
+  "github.com/spf13/cobra"
 )
 
 // listCmd represents the list command
