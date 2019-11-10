@@ -27,8 +27,8 @@ import (
 // listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:   "list",
-	Short: "List object",
-	Long: `List objects in your NextCloud Desk app.
+	Short: "List items",
+	Long: `List items in your NextCloud Desk app.
 
 These objects can be cards, stacks and boards`,
 	Run: func(cmd *cobra.Command, args []string) {
