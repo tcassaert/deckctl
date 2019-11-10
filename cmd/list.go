@@ -17,7 +17,7 @@ package cmd
 
 import (
   "encoding/json"
-	"fmt"
+  "fmt"
   "log"
   "io/ioutil"
 
