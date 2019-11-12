@@ -53,10 +53,7 @@ type Board struct {
 
 var listBoards = &cobra.Command{
 	Use:   "boards",
-	Short: "List object",
-	Long: `List objects in your NextCloud Deck app.
-
-These objects can be cards, stacks and boards`,
+	Short: "List boards",
 	Run: func(cmd *cobra.Command, args []string) {
 		c := NewHttpClient()
 		resp, err := c.GetRequest(fmt.Sprintf("%s/index.php/apps/deck/api/v1.0/boards", c.Endpoint))
