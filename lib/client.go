@@ -1,6 +1,7 @@
 package lib
 
 import (
+  "bytes"
 	"errors"
 	"fmt"
 	"net/http"
@@ -13,12 +14,16 @@ type Client struct {
 }
 
 func (c *Client) GetRequest(url string) (*http.Response, error) {
-	return c.Request("GET", url, 200)
+	return c.Request("GET", url, 200, nil)
 }
 
-func (c *Client) Request(verb, url string, code int) (*http.Response, error) {
+func (c *Client) PostRequest(url string, i []byte) (*http.Response, error) {
+	return c.Request("POST", url, 200, i)
+}
+
+func (c *Client) Request(verb, url string, code int, payload []byte ) (*http.Response, error) {
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequest(verb, url, bytes.NewBuffer(payload))
 	if err != nil {
 		return nil, err
 	}
