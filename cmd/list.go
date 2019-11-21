@@ -13,14 +13,13 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"log"
 
+	"github.com/tcassaert/deckctl/lib"
 	"github.com/spf13/cobra"
 )
 
@@ -37,43 +36,26 @@ These items can be boards, stacks and cards.`,
 	},
 }
 
-type Board struct {
-	Title        string        `json:"title"`
-	Color        string        `json:"color"`
-	Archived     bool          `json:"archived"`
-	Labels       []interface{} `json:"labels"`
-	ACL          []interface{} `json:"acl"`
-	Users        []interface{} `json:"users"`
-	Shared       int           `json:"shared"`
-	Stacks       []interface{} `json:"stacks"`
-	DeletedAt    int           `json:"deletedAt"`
-	LastModified int           `json:"lastModified"`
-	ID           int           `json:"id"`
-}
-
-var listBoards = &cobra.Command{
+var listBoardsCmd = &cobra.Command{
 	Use:   "boards",
-	Short: "List boards",
+	Short: "A brief description of your command",
+	Long: `A longer description that spans multiple lines and likely contains examples
+and usage of using your command. For example:
+Cobra is a CLI library for Go that empowers applications.
+This application is a tool to generate the needed files
+to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		boards := &lib.Board{}
 		c := NewHttpClient()
-		resp, err := c.GetRequest(fmt.Sprintf("%s/index.php/apps/deck/api/v1.0/boards", c.Endpoint))
-		if err != nil {
-			log.Fatal(err)
-		}
-		body, err := ioutil.ReadAll(resp.Body)
-		var decoded []Board
-		jsonErr := json.Unmarshal(body, &decoded)
-		if jsonErr != nil {
-			fmt.Println(jsonErr)
-		}
-		fmt.Println("Your boards are:")
-		for i := 0; i < len(decoded); i++ {
-			fmt.Println(decoded[i].Title)
-		}
+		boardlist := boards.Fetch(c)
+    fmt.Printf("\nYour boards are:\n\n")
+    for i := 0; i < len(boardlist); i++ {
+		  fmt.Printf(" %s\n", boardlist[i].Title)
+	  }
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(listCmd)
-	listCmd.AddCommand(listBoards)
+	listCmd.AddCommand(listBoardsCmd)
 }
