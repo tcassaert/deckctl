@@ -72,13 +72,37 @@ var newStackCmd = &cobra.Command{
 	},
 }
 
+var newCardCmd = &cobra.Command{
+	Use:   "card",
+	Short: "Create new card",
+	Run: func(cmd *cobra.Command, args []string) {
+		card := &lib.Card{}
+		c := NewHTTPClient()
+		board, _ := cmd.Flags().GetString("board")
+		order, _ := cmd.Flags().GetInt("order")
+		stack, _ := cmd.Flags().GetString("stack")
+		title, _ := cmd.Flags().GetString("title")
+		err := card.New(c, board, stack, title, order)
+		if err != nil {
+			log.Fatal(err)
+		} else {
+			fmt.Printf("Created %s card on %s stack on board %s\n", title, stack, board)
+		}
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(newCmd)
 	newCmd.AddCommand(newBoardCmd)
 	newCmd.AddCommand(newStackCmd)
+	newCmd.AddCommand(newCardCmd)
 	newBoardCmd.Flags().StringP("title", "t", "", "The title of the board")
 	newBoardCmd.Flags().StringP("color", "c", "", "The color of the board")
 	newStackCmd.Flags().StringP("board", "b", "", "The title of the board")
 	newStackCmd.Flags().IntP("order", "o", 0, "Order of the stack")
 	newStackCmd.Flags().StringP("title", "t", "", "The title of the stack")
+	newCardCmd.Flags().StringP("board", "b", "", "The title of the board")
+	newCardCmd.Flags().IntP("order", "o", 0, "Order of the stack")
+	newCardCmd.Flags().StringP("stack", "s", "", "The title of the stack")
+	newCardCmd.Flags().StringP("title", "t", "", "The title of the card")
 }
