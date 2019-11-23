@@ -54,9 +54,31 @@ var newBoardCmd = &cobra.Command{
 	},
 }
 
+var newStackCmd = &cobra.Command{
+	Use:   "stack",
+	Short: "Create new stack",
+	Run: func(cmd *cobra.Command, args []string) {
+		stack := &lib.Stack{}
+		c := NewHTTPClient()
+		board, _ := cmd.Flags().GetString("board")
+		order, _ := cmd.Flags().GetInt("order")
+		title, _ := cmd.Flags().GetString("title")
+		err := stack.New(c, board, title, order)
+		if err != nil {
+			log.Fatal(err)
+		} else {
+			fmt.Printf("Created %s stack on board %s\n", title, board)
+		}
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(newCmd)
 	newCmd.AddCommand(newBoardCmd)
+	newCmd.AddCommand(newStackCmd)
 	newBoardCmd.Flags().StringP("title", "t", "", "The title of the board")
 	newBoardCmd.Flags().StringP("color", "c", "", "The color of the board")
+	newStackCmd.Flags().StringP("board", "b", "", "The title of the board")
+	newStackCmd.Flags().IntP("order", "o", 0, "Order of the stack")
+	newStackCmd.Flags().StringP("title", "t", "", "The title of the stack")
 }

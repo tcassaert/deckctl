@@ -51,14 +51,24 @@ func (s *Stack) Fetch(c Client, title string) []Stack {
 }
 
 // New Stack
-func (s *Stack) New(c Client, title, color string) error {
+func (s *Stack) New(c Client, board, title string, order int) error {
+	boards := &Board{}
+	boardid := boards.GetID(c, board)
 	if title == "" {
-		fmt.Println("Please provide a title")
+		fmt.Println("Please provide a title for the new stack")
 		os.Exit(1)
 	}
-	jsonStr := fmt.Sprintf("{\"title\": \"%s\", \"color\": \"%s\"}", title, color)
+	if board == "" {
+		fmt.Println("Please provide a board where the stack needs to be made")
+		os.Exit(1)
+	}
+	if order == 0 {
+		fmt.Println("Please provide an order number for the stack")
+		os.Exit(1)
+	}
+	jsonStr := fmt.Sprintf("{\"title\": \"%s\",\"order\": \"%d\"}", title, order)
 	var jsonData = []byte(jsonStr)
-	_, err := c.PostRequest(fmt.Sprintf("%s/index.php/apps/deck/api/v1.0/boards", c.Endpoint), jsonData)
+	_, err := c.PostRequest(fmt.Sprintf("%s/index.php/apps/deck/api/v1.0/boards/%d/stacks", c.Endpoint, boardid), jsonData)
 	if err != nil {
 		log.Fatal(err)
 	} else {
