@@ -27,14 +27,15 @@ import (
 // Stack struct representing the Stack item
 type Stack struct {
 	BoardID int    `json:"boardId"`
-	Title   string `json:"title"`
 	ID      int    `json:"id"`
+	Order   int    `json:"order"`
+	Title   string `json:"title"`
 }
 
 // Fetch stack
-func (s *Stack) Fetch(c Client, title string) []Stack {
+func (s *Stack) Fetch(c Client, boardtitle string) []Stack {
 	boards := &Board{}
-	boardid := boards.GetID(c, title)
+	boardid := boards.GetID(c, boardtitle)
 	resp, err := c.GetRequest(fmt.Sprintf("%s/index.php/apps/deck/api/v1.0/boards/%d/stacks", c.Endpoint, boardid))
 	if err != nil {
 		log.Fatal(err)
@@ -48,6 +49,23 @@ func (s *Stack) Fetch(c Client, title string) []Stack {
 	}
 
 	return stacks
+}
+
+// GetID from stack
+func (s *Stack) GetID(c Client, boardtitle string, title string) int {
+	stacks := &Stack{}
+	stacklist := stacks.Fetch(c, boardtitle)
+	var id int
+	for i := 0; i < len(stacklist); i++ {
+		if stacklist[i].Title == title {
+			id = stacklist[i].ID
+		}
+	}
+	if id == 0 {
+		fmt.Println(fmt.Errorf("No stack with title %s found", title))
+		os.Exit(1)
+	}
+	return id
 }
 
 // New Stack
