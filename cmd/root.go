@@ -88,7 +88,8 @@ func initConfig() {
 	}
 }
 
-func NewHttpClient() lib.Client {
+// NewHTTPClient initialization
+func NewHTTPClient() lib.Client {
 	username := viper.GetString("user")
 	password := viper.GetString("password")
 	endpoint := viper.GetString("endpoint")

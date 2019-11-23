@@ -18,25 +18,28 @@ package lib
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"net/http"
 )
 
+// Client struct for http client
 type Client struct {
 	Endpoint string
 	Username string
 	Password string
 }
 
+// GetRequest method to make GET request to the NextCloud Deck API
 func (c *Client) GetRequest(url string) (*http.Response, error) {
 	return c.Request("GET", url, 200, nil)
 }
 
+// PostRequest method to make POST request to the NextCloud Deck API
 func (c *Client) PostRequest(url string, i []byte) (*http.Response, error) {
 	return c.Request("POST", url, 200, i)
 }
 
+// Request function to handle all API request
 func (c *Client) Request(verb, url string, code int, payload []byte) (*http.Response, error) {
 	client := &http.Client{}
 	req, err := http.NewRequest(verb, url, bytes.NewBuffer(payload))
@@ -52,7 +55,7 @@ func (c *Client) Request(verb, url string, code int, payload []byte) (*http.Resp
 		return resp, err
 	}
 	if resp.StatusCode != code {
-		return resp, errors.New(fmt.Sprintf("Received %d, expecting %d status code while fetching %s", resp.StatusCode, code, url))
+		return resp, fmt.Errorf("Received %d, expecting %d status code while fetching %s", resp.StatusCode, code, url)
 	}
 	return resp, err
 }

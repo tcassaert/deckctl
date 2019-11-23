@@ -24,12 +24,14 @@ import (
 	"os"
 )
 
+// Board struct representing the Board item
 type Board struct {
 	Title string `json:"title"`
 	Color string `json:"color"`
 	ID    int    `json:"id"`
 }
 
+// Fetch board
 func (b *Board) Fetch(c Client) []Board {
 	resp, err := c.GetRequest(fmt.Sprintf("%s/index.php/apps/deck/api/v1.0/boards", c.Endpoint))
 	if err != nil {
@@ -46,6 +48,7 @@ func (b *Board) Fetch(c Client) []Board {
 	return boards
 }
 
+// New Board
 func (b *Board) New(c Client, title, color string) error {
 	if title == "" {
 		fmt.Println("Please provide a title")
