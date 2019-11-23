@@ -17,20 +17,21 @@ limitations under the License.
 package lib
 
 import (
-  "encoding/json"
-  "fmt"
+	"encoding/json"
+	"fmt"
 	"io/ioutil"
-  "log"
+	"log"
+	"os"
 )
 
 type Board struct {
-	Title        string        `json:"title"`
-	Color        string        `json:"color"`
-	ID           int           `json:"id"`
+	Title string `json:"title"`
+	Color string `json:"color"`
+	ID    int    `json:"id"`
 }
 
 func (b *Board) Fetch(c Client) []Board {
-  resp, err := c.GetRequest(fmt.Sprintf("%s/index.php/apps/deck/api/v1.0/boards", c.Endpoint))
+	resp, err := c.GetRequest(fmt.Sprintf("%s/index.php/apps/deck/api/v1.0/boards", c.Endpoint))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -42,5 +43,21 @@ func (b *Board) Fetch(c Client) []Board {
 		log.Fatal(jsonErr)
 	}
 
-  return boards
+	return boards
+}
+
+func (b *Board) New(c Client, title, color string) error {
+	if title == "" {
+		fmt.Println("Please provide a title")
+		os.Exit(1)
+	}
+	jsonStr := fmt.Sprintf("{\"title\": \"%s\", \"color\": \"%s\"}", title, color)
+	var jsonData = []byte(jsonStr)
+	_, err := c.PostRequest(fmt.Sprintf("%s/index.php/apps/deck/api/v1.0/boards", c.Endpoint), jsonData)
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		return nil
+	}
+	return nil
 }

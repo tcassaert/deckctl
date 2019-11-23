@@ -18,5 +18,5 @@ package main
 import "github.com/tcassaert/deckctl/cmd"
 
 func main() {
-  cmd.Execute()
+	cmd.Execute()
 }

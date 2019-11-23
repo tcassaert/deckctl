@@ -19,8 +19,8 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/tcassaert/deckctl/lib"
 	"github.com/spf13/cobra"
+	"github.com/tcassaert/deckctl/lib"
 )
 
 // listCmd represents the list command
@@ -48,10 +48,10 @@ to quickly create a Cobra application.`,
 		boards := &lib.Board{}
 		c := NewHttpClient()
 		boardlist := boards.Fetch(c)
-    fmt.Printf("\nYour boards are:\n\n")
-    for i := 0; i < len(boardlist); i++ {
-		  fmt.Printf(" %s\n", boardlist[i].Title)
-	  }
+		fmt.Printf("\nYour boards are:\n\n")
+		for i := 0; i < len(boardlist); i++ {
+			fmt.Printf(" %s\n", boardlist[i].Title)
+		}
 	},
 }
 

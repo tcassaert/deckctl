@@ -20,6 +20,7 @@ import (
 	"log"
 
 	"github.com/spf13/cobra"
+	"github.com/tcassaert/deckctl/lib"
 )
 
 // newCmd represents the new command
@@ -39,12 +40,11 @@ var newBoardCmd = &cobra.Command{
 	Use:   "board",
 	Short: "Create new board",
 	Run: func(cmd *cobra.Command, args []string) {
+		board := &lib.Board{}
 		c := NewHttpClient()
 		title, _ := cmd.Flags().GetString("title")
 		color, _ := cmd.Flags().GetString("color")
-		jsonStr := fmt.Sprintf("{\"title\": \"%s\", \"color\": \"%s\"}", title, color)
-		var jsonData = []byte(jsonStr)
-		_, err := c.PostRequest(fmt.Sprintf("%s/index.php/apps/deck/api/v1.0/boards", c.Endpoint), jsonData)
+		err := board.New(c, title, color)
 		if err != nil {
 			log.Fatal(err)
 		} else {

@@ -17,7 +17,7 @@ limitations under the License.
 package lib
 
 import (
-  "bytes"
+	"bytes"
 	"errors"
 	"fmt"
 	"net/http"
@@ -37,7 +37,7 @@ func (c *Client) PostRequest(url string, i []byte) (*http.Response, error) {
 	return c.Request("POST", url, 200, i)
 }
 
-func (c *Client) Request(verb, url string, code int, payload []byte ) (*http.Response, error) {
+func (c *Client) Request(verb, url string, code int, payload []byte) (*http.Response, error) {
 	client := &http.Client{}
 	req, err := http.NewRequest(verb, url, bytes.NewBuffer(payload))
 	if err != nil {
