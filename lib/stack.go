@@ -24,49 +24,34 @@ import (
 	"os"
 )
 
-// Board struct representing the Board item
-type Board struct {
-	Title string `json:"title"`
-	Color string `json:"color"`
-	ID    int    `json:"id"`
+// Stack struct representing the Stack item
+type Stack struct {
+	BoardID int    `json:"boardId"`
+	Title   string `json:"title"`
+	ID      int    `json:"id"`
 }
 
-// Fetch board
-func (b *Board) Fetch(c Client) []Board {
-	resp, err := c.GetRequest(fmt.Sprintf("%s/index.php/apps/deck/api/v1.0/boards", c.Endpoint))
+// Fetch stack
+func (s *Stack) Fetch(c Client, title string) []Stack {
+	boards := &Board{}
+	boardid := boards.GetID(c, title)
+	resp, err := c.GetRequest(fmt.Sprintf("%s/index.php/apps/deck/api/v1.0/boards/%d/stacks", c.Endpoint, boardid))
 	if err != nil {
 		log.Fatal(err)
 	}
 	body, err := ioutil.ReadAll(resp.Body)
-	var boards []Board
-	jsonErr := json.Unmarshal(body, &boards)
+	var stacks []Stack
+	jsonErr := json.Unmarshal(body, &stacks)
 
 	if jsonErr != nil {
 		log.Fatal(jsonErr)
 	}
 
-	return boards
+	return stacks
 }
 
-// GetID from Board
-func (b *Board) GetID(c Client, title string) int {
-	boards := &Board{}
-	boardlist := boards.Fetch(c)
-	var id int
-	for i := 0; i < len(boardlist); i++ {
-		if boardlist[i].Title == title {
-			id = boardlist[i].ID
-		}
-	}
-	if id == 0 {
-		fmt.Println(fmt.Errorf("No board with title %s found", title))
-		os.Exit(1)
-	}
-	return id
-}
-
-// New Board
-func (b *Board) New(c Client, title, color string) error {
+// New Stack
+func (s *Stack) New(c Client, title, color string) error {
 	if title == "" {
 		fmt.Println("Please provide a title")
 		os.Exit(1)

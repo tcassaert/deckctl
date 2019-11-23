@@ -49,7 +49,24 @@ var listBoardsCmd = &cobra.Command{
 	},
 }
 
+var listStacksCmd = &cobra.Command{
+	Use:   "stacks",
+	Short: "List stacks",
+	Run: func(cmd *cobra.Command, args []string) {
+		stacks := &lib.Stack{}
+		c := NewHTTPClient()
+		board, _ := cmd.Flags().GetString("board")
+		stacklist := stacks.Fetch(c, board)
+		fmt.Printf("\nYour stacks on board %s are:\n\n", board)
+		for i := 0; i < len(stacklist); i++ {
+			fmt.Printf(" %s\n", stacklist[i].Title)
+		}
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(listCmd)
 	listCmd.AddCommand(listBoardsCmd)
+	listCmd.AddCommand(listStacksCmd)
+	listStacksCmd.Flags().StringP("board", "t", "", "The title of the board")
 }
