@@ -18,12 +18,36 @@ List your boards
 $ deckctl list boards
 ```
 
+List the stacks on given board
+
+```
+$ deckctl list stacks --board foo
+```
+
+List the cards on given stack and board
+
+```
+$ deckctl list cards --board foo --stack bar
+```
+
 ### New
 
 Create new board
 
 ```
-$ deckctl new board --title 'new-board' --color '#000000'
+$ deckctl new board --title foo --color '#000000'
+```
+
+Create new stack on given board
+
+```
+$ deckctl new stack --title foo --board bar
+```
+
+Create new card  on given board and stack
+
+```
+$ deckctl new card --title foo --board bar --stack bar
 ```
 
 ## Configuration
