@@ -18,18 +18,54 @@ package lib
 
 import (
 	"fmt"
+	"github.com/tidwall/gjson"
+	"io/ioutil"
 	"log"
 	"os"
 )
 
 // Card struct representing the Stack item
 type Card struct {
-	BoardID     int    `json:"boardId"`
-	Description string `json:"description"`
-	ID          int    `json:"id"`
-	Order       int    `json:"order"`
-	StackID     int    `json:"stackId"`
-	Title       string `json:"title"`
+	Title           string        `json:"title"`
+	Description     string        `json:"description"`
+	StackID         int           `json:"stackId"`
+	Type            string        `json:"type"`
+	LastModified    int           `json:"lastModified"`
+	LastEditor      interface{}   `json:"lastEditor"`
+	CreatedAt       int           `json:"createdAt"`
+	Labels          interface{}   `json:"labels"`
+	AssignedUsers   []interface{} `json:"assignedUsers"`
+	Attachments     interface{}   `json:"attachments"`
+	AttachmentCount int           `json:"attachmentCount"`
+	Owner           interface{}   `json:"owner"`
+	Order           int           `json:"order"`
+	Archived        bool          `json:"archived"`
+	Duedate         interface{}   `json:"duedate"`
+	DeletedAt       int           `json:"deletedAt"`
+	CommentsUnread  int           `json:"commentsUnread"`
+	ID              int           `json:"id"`
+	Overdue         int           `json:"overdue"`
+}
+
+// Fetch list of cards
+func (cd *Card) Fetch(c Client, boardtitle, stacktitle string) []gjson.Result {
+	boards := &Board{}
+	stacks := &Stack{}
+	boardid := boards.GetID(c, boardtitle)
+	stackid := stacks.GetID(c, boardtitle, stacktitle)
+
+	resp, err := c.GetRequest(fmt.Sprintf("%s/index.php/apps/deck/api/v1.0/boards/%d/stacks/%d", c.Endpoint, boardid, stackid))
+	if err != nil {
+		log.Fatal(err)
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	stringjson := (string(body))
+	cardtitles := gjson.Get(stringjson, "cards.#.title")
+	if len(cardtitles.Array()) <= 0 {
+		fmt.Println(fmt.Errorf("No cards on stack %s found", stacktitle))
+		os.Exit(1)
+	}
+	return cardtitles.Array()
 }
 
 // New Card
