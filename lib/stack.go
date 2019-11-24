@@ -26,10 +26,12 @@ import (
 
 // Stack struct representing the Stack item
 type Stack struct {
-	BoardID int    `json:"boardId"`
-	ID      int    `json:"id"`
-	Order   int    `json:"order"`
-	Title   string `json:"title"`
+	Title        string `json:"title"`
+	BoardID      int    `json:"boardId"`
+	DeletedAt    int    `json:"deletedAt"`
+	LastModified int    `json:"lastModified"`
+	Order        int    `json:"order"`
+	ID           int    `json:"id"`
 }
 
 // Fetch stack
