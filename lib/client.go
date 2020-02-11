@@ -29,6 +29,11 @@ type Client struct {
 	Password string
 }
 
+// DeleteRequest method to make DELETE request to the NextCloud Deck API
+func (c *Client) DeleteRequest(url string) (*http.Response, error) {
+	return c.Request("DELETE", url, 200, nil)
+}
+
 // GetRequest method to make GET request to the NextCloud Deck API
 func (c *Client) GetRequest(url string) (*http.Response, error) {
 	return c.Request("GET", url, 200, nil)

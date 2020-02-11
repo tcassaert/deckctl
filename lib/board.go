@@ -65,6 +65,23 @@ func (b *Board) GetID(c Client, title string) int {
 	return id
 }
 
+// Delete Board
+func (b *Board) Delete(c Client, title string) error {
+	if title == "" {
+		fmt.Println("Please provide a title")
+		os.Exit(1)
+	}
+	boards := &Board{}
+	boardid := boards.GetID(c, title)
+	_, err := c.DeleteRequest(fmt.Sprintf("%s/index.php/apps/deck/api/v1.0/boards/%d", c.Endpoint, boardid))
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		return nil
+	}
+	return nil
+}
+
 // New Board
 func (b *Board) New(c Client, title, color string) error {
 	if title == "" {
