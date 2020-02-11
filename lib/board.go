@@ -1,5 +1,5 @@
 /*
-Copyright © 2019 Thomas Cassaert <tcassaert@inuits.eu>
+Copyright © 2020 Thomas Cassaert <tcassaert@inuits.eu>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
