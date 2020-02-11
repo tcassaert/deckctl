@@ -52,10 +52,28 @@ var deleteBoardCmd = &cobra.Command{
 	},
 }
 
+var deleteStackCmd = &cobra.Command{
+	Use:   "stack",
+	Short: "Delete stack",
+	Run: func(cmd *cobra.Command, args []string) {
+		stacks := &lib.Stack{}
+		c := NewHTTPClient()
+		board, _ := cmd.Flags().GetString("board")
+		title, _ := cmd.Flags().GetString("stack")
+		err := stacks.Delete(c, board, title)
+		if err != nil {
+			log.Fatal(err)
+		} else {
+			fmt.Printf("Deleted \"%s\" stack on board %s\n", title, board)
+		}
+	},
+}
+
 func init() {
 	rootCmd.AddCommand(deleteCmd)
 	deleteCmd.AddCommand(deleteBoardCmd)
+	deleteCmd.AddCommand(deleteStackCmd)
 	deleteBoardCmd.Flags().StringP("title", "t", "", "The title of the board")
-	//	listCardsCmd.Flags().StringP("board", "b", "", "The title of the board")
-	//	listCardsCmd.Flags().StringP("stack", "s", "", "The title of the stack")
+	deleteStackCmd.Flags().StringP("board", "b", "", "The title of the board")
+	deleteStackCmd.Flags().StringP("stack", "s", "", "The title of the stack")
 }

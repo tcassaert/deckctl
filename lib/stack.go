@@ -70,6 +70,25 @@ func (s *Stack) GetID(c Client, boardtitle string, title string) int {
 	return id
 }
 
+// Delete Stack
+func (s *Stack) Delete(c Client, board, title string) error {
+	if title == "" {
+		fmt.Println("Please provide the title of the stack to delete")
+		os.Exit(1)
+	}
+	boards := &Board{}
+	stacks := &Stack{}
+	boardid := boards.GetID(c, board)
+	stackid := stacks.GetID(c, board, title)
+	_, err := c.DeleteRequest(fmt.Sprintf("%s/index.php/apps/deck/api/v1.0/boards/%d/stacks/%d", c.Endpoint, boardid, stackid))
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		return nil
+	}
+	return nil
+}
+
 // New Stack
 func (s *Stack) New(c Client, board, title string, order int) error {
 	boards := &Board{}
