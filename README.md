@@ -44,10 +44,30 @@ Create new stack on given board
 $ deckctl new stack --title foo --board bar
 ```
 
-Create new card  on given board and stack
+Create new card on given board and stack
 
 ```
 $ deckctl new card --title foo --board bar --stack bar
+```
+
+### Delete
+
+Delete a board
+
+```
+$ deckctl delete board --title foo
+```
+
+Delete a stack on a board
+
+```
+$ deckctl delete stack --title foo --board bar
+```
+
+Delete a card on given board and stack
+
+```
+$ deckctl delete card --title foo --board bar --stack bar
 ```
 
 ## Configuration
