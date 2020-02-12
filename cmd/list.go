@@ -21,6 +21,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/tcassaert/deckctl/lib"
+	"github.com/tidwall/gjson"
 )
 
 var listCmd = &cobra.Command{
@@ -72,10 +73,12 @@ var listCardsCmd = &cobra.Command{
 		c := NewHTTPClient()
 		board, _ := cmd.Flags().GetString("board")
 		stack, _ := cmd.Flags().GetString("stack")
-		cardtitles := cards.Fetch(c, board, stack)
+		cardlist := cards.Fetch(c, board, stack)
 		fmt.Printf("\nYour cards on board %s, stack %s are:\n\n", board, stack)
-		for _, title := range cardtitles {
-			fmt.Printf("  %s\n", title)
+		for _, card := range cardlist {
+			cardstring := card.String()
+			cardtitle := gjson.Get(cardstring, "title")
+			fmt.Printf("  %s\n", cardtitle)
 		}
 	},
 }

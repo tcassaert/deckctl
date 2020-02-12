@@ -60,12 +60,55 @@ func (cd *Card) Fetch(c Client, boardtitle, stacktitle string) []gjson.Result {
 	}
 	body, err := ioutil.ReadAll(resp.Body)
 	stringjson := (string(body))
-	cardtitles := gjson.Get(stringjson, "cards.#.title")
-	if len(cardtitles.Array()) <= 0 {
+	//	cardtitles := gjson.Get(stringjson, "cards.#.title")
+	cards := gjson.Get(stringjson, "cards")
+	if len(cards.Array()) <= 0 {
 		fmt.Println(fmt.Errorf("No cards on stack %s found", stacktitle))
 		os.Exit(1)
 	}
-	return cardtitles.Array()
+	return cards.Array()
+}
+
+// GetID from card
+func (cd *Card) GetID(c Client, boardtitle, stacktitle, title string) int64 {
+	cards := &Card{}
+	cardlist := cards.Fetch(c, boardtitle, stacktitle)
+	var id int64
+	for _, card := range cardlist {
+		cardstring := card.String()
+		cardtitle := gjson.Get(cardstring, "title").String()
+		if cardtitle == title {
+			id = gjson.Get(cardstring, "id").Int()
+		} else {
+			id = 0
+		}
+	}
+	if id == 0 {
+		fmt.Println(fmt.Errorf("No card with title %s found", title))
+		os.Exit(1)
+	}
+	return id
+}
+
+// Delete Card
+func (cd *Card) Delete(c Client, board, stack, title string) error {
+	if title == "" {
+		fmt.Println("Please provide the title of the stack to delete")
+		os.Exit(1)
+	}
+	boards := &Board{}
+	stacks := &Stack{}
+	cards := &Card{}
+	boardid := boards.GetID(c, board)
+	stackid := stacks.GetID(c, board, stack)
+	cardid := cards.GetID(c, board, stack, title)
+	_, err := c.DeleteRequest(fmt.Sprintf("%s/index.php/apps/deck/api/v1.0/boards/%d/stacks/%d/cards/%d", c.Endpoint, boardid, stackid, cardid))
+	if err != nil {
+		log.Fatal(err)
+	} else {
+		return nil
+	}
+	return nil
 }
 
 // New Card
