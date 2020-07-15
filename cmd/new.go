@@ -49,7 +49,7 @@ var newBoardCmd = &cobra.Command{
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			fmt.Printf("Created %s board\n", title)
+			fmt.Printf("Created \"%s\" board\n", title)
 		}
 	},
 }
@@ -67,7 +67,7 @@ var newStackCmd = &cobra.Command{
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			fmt.Printf("Created %s stack on board %s\n", title, board)
+			fmt.Printf("Created \"%s\" stack on board \"%s\"\n", title, board)
 		}
 	},
 }
@@ -86,7 +86,7 @@ var newCardCmd = &cobra.Command{
 		if err != nil {
 			log.Fatal(err)
 		} else {
-			fmt.Printf("Created %s card on %s stack on board %s\n", title, stack, board)
+			fmt.Printf("Created \"%s\" card on \"%s\" stack on board \"%s\"\n", title, stack, board)
 		}
 	},
 }
