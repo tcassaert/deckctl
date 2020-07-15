@@ -77,7 +77,7 @@ You can create a config file ~/.deckctl.yaml (or another path with --config).
 ```
 ---
 endpoint: https://nextcloud.local
-user: your_username
+username: your_username
 password: your_password
 ```
 

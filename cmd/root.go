@@ -52,8 +52,8 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.deckctl.yaml)")
-	rootCmd.PersistentFlags().StringVarP(&username, "user", "u", "", "username")
-	viper.BindPFlag("user", rootCmd.PersistentFlags().Lookup("user"))
+	rootCmd.PersistentFlags().StringVarP(&username, "username", "u", "", "username")
+	viper.BindPFlag("username", rootCmd.PersistentFlags().Lookup("username"))
 	rootCmd.PersistentFlags().StringVarP(&password, "password", "p", "", "password")
 	viper.BindPFlag("password", rootCmd.PersistentFlags().Lookup("password"))
 	rootCmd.PersistentFlags().StringVarP(&endpoint, "endpoint", "e", "", "Base URL")
@@ -83,14 +83,12 @@ func initConfig() {
 	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-	}
+	if err := viper.ReadInConfig(); err == nil {}
 }
 
 // NewHTTPClient initialization
 func NewHTTPClient() lib.Client {
-	username := viper.GetString("user")
+	username := viper.GetString("username")
 	password := viper.GetString("password")
 	endpoint := viper.GetString("endpoint")
 	if endpoint == "" {
