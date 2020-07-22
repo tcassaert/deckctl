@@ -70,6 +70,24 @@ Delete a card on given board and stack
 $ deckctl delete card --title foo --board bar --stack bar
 ```
 
+### Init
+
+Initialize a new board, with stacks configured in the configuration file
+
+```
+$ deckctl init --color '#000000' --title foo
+```
+
+The configuration for this board could look like this:
+
+```
+init:
+  stacks:
+    - 'To do'
+    - 'In progress'
+    - 'Done'
+```
+
 ## Configuration
 
 You can create a config file ~/.deckctl.yaml (or another path with --config).
