@@ -19,6 +19,7 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -47,7 +48,8 @@ var initCmd = &cobra.Command{
 				log.Fatal(errStack)
 			}
 		}
-		fmt.Printf("Board \"%s\" created with the configured stacks.\n", title)
+		fmt.Printf("Board \"%s\" created:\n", title)
+		fmt.Println(strings.Join(stacklist, "\t\t\t"))
 	},
 }
 
